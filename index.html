@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bichar - Nepal's own free speech social media</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #2d2d2d;
+            --accent-color: #1e3a8a;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-color: #27272a;
+            --card-bg: #18181b;
+            --surface-bg: #0f0f0f;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+            --border-radius-xl: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow-x: hidden;
+            background: var(--surface-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* Minimal Background */
+        .minimal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--surface-bg);
+        }
+
+        .minimal-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(30, 58, 138, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(30, 58, 138, 0.02) 0%, transparent 50%);
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Professional Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .cta-nav {
+            background: var(--accent-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .cta-nav:hover {
+            background: #2563eb;
+        }
+
+        /* Professional Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 120px 0 80px;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text {
+            text-align: left;
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .app-carousel {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 700px;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .app-slides {
+            display: flex;
+            width: 300%;
+            height: 100%;
+            animation: slideShow 12s infinite;
+        }
+
+        .app-slide {
+            width: 33.333%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .app-slide-title {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--accent-color), #3b82f6);
+            border: 1px solid var(--accent-color);
+            border-radius: 25px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes slideShow {
+            0%, 30% { transform: translateX(0); }
+            33.33%, 63.33% { transform: translateX(-33.333%); }
+            66.66%, 96.66% { transform: translateX(-66.666%); }
+            100% { transform: translateX(0); }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: var(--accent-color);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.25rem, 3vw, 1.75rem);
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 24px;
+        }
+
+        .hero-bullets {
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .hero-notice {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.1), rgba(59, 130, 246, 0.1));
+            border: 1px solid rgba(30, 58, 138, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 32px;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-notice::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-color), #60a5fa, var(--accent-color));
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        .hero-notice-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-notice-title::before {
+            content: '📱';
+            font-size: 1.2rem;
+        }
+
+        .hero-notice-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin: 0 0 12px 0;
+        }
+
+        .hero-notice-highlight {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .hero-notice-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--accent-color), #3b82f6);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.3);
+        }
+
+        .hero-notice-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.4);
+            background: linear-gradient(135deg, #1e40af, #2563eb);
+        }
+
+        .hero-notice-button::before {
+            content: '🔗';
+            font-size: 1rem;
+        }
+
+        /* Download Info Modal */
+        .download-info-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .download-info-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .download-info-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .download-info-modal.show .download-info-content {
+            transform: scale(1);
+        }
+
+        .download-info-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .download-info-close:hover {
+            color: var(--accent-color);
+        }
+
+        .download-info-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .download-info-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .download-info-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .download-info-status {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .download-info-qr-button {
+            background: linear-gradient(135deg, var(--accent-color), #3b82f6);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .download-info-qr-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+        }
+
+        .download-info-qr-button::before {
+            content: '🔗';
+        }
+
+        @keyframes shimmer {
+            0%, 100% {
+                transform: translateX(-100%);
+            }
+            50% {
+                transform: translateX(100%);
+            }
+        }
+
+        .hero-bullet {
+            font-size: 1.125rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            padding: 16px 0;
+            font-weight: 400;
+            line-height: 1.6;
+            position: relative;
+            padding-left: 24px;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideInBullet 0.6s ease forwards;
+        }
+
+        .hero-bullet:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .hero-bullet:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .hero-bullet:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .hero-bullet:last-child {
+            margin-bottom: 0;
+        }
+
+        .hero-bullet::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: 16px;
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            font-weight: 300;
+            transition: all 0.3s ease;
+        }
+
+        .hero-bullet:hover::before {
+            transform: scale(1.2);
+            color: #60a5fa;
+        }
+
+        .hero-bullet:hover {
+            color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        @keyframes slideInBullet {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Download Buttons */
+        .download-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 12px 20px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+            min-width: 160px;
+        }
+
+        .download-btn:hover {
+            border-color: var(--accent-color);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .download-icon {
+            font-size: 20px;
+        }
+
+        .download-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .download-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .download-store {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Phone Mockup */
+        .phone-mockup {
+            position: relative;
+            width: 350px;
+            height: 600px;
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            border-radius: 35px;
+            padding: 25px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            margin: 0 auto;
+        }
+
+        .phone {
+            width: 100%;
+            height: 100%;
+            background: #1a1a1a;
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.05);
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            position: relative;
+        }
+
+        .app-screen-1 {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        .app-screen-2 {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .app-screen-3 {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            padding: 60px 0 40px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .footer-section {
+            text-align: left;
+        }
+
+        .footer-section h4 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .social-links a[title="Facebook"] {
+            background: linear-gradient(135deg, #1877f2, #0d5bb8);
+        }
+
+        .social-links a[title="Instagram"] {
+            background: linear-gradient(135deg, #e4405f, #c13584, #833ab4);
+        }
+
+        .social-links a[title="X (Twitter)"] {
+            background: #000000;
+        }
+
+        .social-links a[title="TikTok"] {
+            background: linear-gradient(135deg, #000000, #ff0050);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-bottom p {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        /* QR Code Modal */
+        .qr-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .qr-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                backdrop-filter: blur(0px);
+            }
+            to {
+                opacity: 1;
+                backdrop-filter: blur(10px);
+            }
+        }
+
+        .qr-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            transform: scale(0.8) translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .qr-modal.show .qr-content {
+            transform: scale(1) translateY(0);
+            animation: contentSlideIn 0.4s ease 0.1s both;
+        }
+
+        @keyframes contentSlideIn {
+            from {
+                transform: scale(0.8) translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .qr-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .qr-close:hover {
+            color: var(--text-primary);
+        }
+
+        .qr-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .qr-modal.show .qr-title {
+            transform: translateY(0);
+            opacity: 1;
+            animation: textSlideUp 0.5s ease 0.2s both;
+        }
+
+        .qr-description {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.6;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .qr-modal.show .qr-description {
+            transform: translateY(0);
+            opacity: 1;
+            animation: textSlideUp 0.5s ease 0.4s both;
+        }
+
+        .qr-instructions {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 16px;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .qr-modal.show .qr-instructions {
+            transform: translateY(0);
+            opacity: 1;
+            animation: textSlideUp 0.5s ease 0.6s both;
+        }
+
+        @keyframes textSlideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Why Bichar Section */
+        .why-bichar-section {
+            background: var(--primary-color);
+            padding: 100px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .why-bichar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(30, 58, 138, 0.1);
+            border: 1px solid rgba(30, 58, 138, 0.2);
+            color: var(--accent-color);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .section-description {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .comparison-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 30px;
+            position: relative;
+        }
+
+        .comparison-item.other-platforms {
+            border-color: #ef4444;
+        }
+
+        .comparison-item.tarang-platform {
+            border-color: var(--accent-color);
+        }
+
+        .comparison-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-icon {
+            font-size: 24px;
+        }
+
+        .comparison-item h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .comparison-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .comparison-list li {
+            padding: 12px 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .comparison-list li:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .key-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-highlight {
+            text-align: center;
+            padding: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            transition: all 0.3s ease;
+        }
+
+        .feature-highlight:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-highlight h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .feature-highlight p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            background: white;
+            border-radius: var(--border-radius);
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #000;
+            position: relative;
+            overflow: hidden;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .qr-modal.show .qr-code {
+            transform: scale(1);
+            opacity: 1;
+            animation: qrCodeAppear 0.6s ease 0.3s both;
+        }
+
+        @keyframes qrCodeAppear {
+            from {
+                transform: scale(0.9) rotateY(90deg);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) rotateY(0deg);
+                opacity: 1;
+            }
+        }
+
+        .qr-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(45deg, #000 25%, transparent 25%),
+                linear-gradient(-45deg, #000 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #000 75%),
+                linear-gradient(-45deg, transparent 75%, #000 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            opacity: 0.8;
+            animation: qrPatternPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes qrPatternPulse {
+            0%, 100% {
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                padding: 100px 0 60px;
+            }
+            
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            text-align: center;
+            }
+            
+            .hero-text {
+                text-align: center;
+            }
+            
+            .hero-title {
+            font-size: 3rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .hero-bullets {
+                max-width: 100%;
+            }
+            
+            .hero-bullet {
+                font-size: 1rem;
+                padding: 12px 0;
+                padding-left: 20px;
+            }
+            
+            .hero-bullet::before {
+                top: 12px;
+                font-size: 1.25rem;
+            }
+            
+            .hero-notice {
+                padding: 16px;
+                margin-bottom: 24px;
+            }
+            
+            .hero-notice-title {
+                font-size: 0.95rem;
+            }
+            
+            .hero-notice-text {
+                font-size: 0.9rem;
+            }
+            
+            .download-buttons {
+            justify-content: center;
+                gap: 12px;
+            }
+            
+            .download-btn {
+                min-width: 140px;
+            }
+            
+            .app-carousel {
+                max-width: 350px;
+                height: 600px;
+            }
+            
+            .phone-mockup {
+                width: 300px;
+                height: 500px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+            }
+            
+            .nav-container {
+                padding: 0 16px;
+            }
+            
+            .hero {
+                padding: 80px 0 40px;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.25rem;
+            }
+            
+            .download-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .download-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .app-carousel {
+                max-width: 320px;
+                height: 550px;
+            }
+            
+            .phone-mockup {
+                width: 280px;
+                height: 450px;
+            }
+            
+            .app-slide-title {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .key-features {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .feature-highlight {
+                padding: 20px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .section-description {
+                font-size: 1.1rem;
+            }
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="minimal-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">B</div>
+                <span>Bichar</span>
+            </a>
+            
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                <li><a href="#why-bichar">Why Bichar</a></li>
+                </ul>
+            
+            <a href="#" class="cta-nav" id="qrButton">Get QR to Install</a>
+        </div>
+            </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">Bichar</h1>
+                    <div class="hero-subtitle">Nepal's own free speech social media</div>
+                    <div class="hero-bullets">
+                        <div class="hero-bullet">Forget followers. Find conversations.</div>
+                        <div class="hero-bullet">Forget algorithms. Feel authenticity.</div>
+                        <div class="hero-bullet">Social media without filters, feeds, or fake clout.</div>
+                    </div>
+
+                    <div class="hero-notice">
+                        <div class="hero-notice-title">App Status Update</div>
+                        <p class="hero-notice-text">
+                            We've submitted Bichar to <span class="hero-notice-highlight">Google Play Store</span> and it will be published soon! 
+                            Meanwhile, you can <span class="hero-notice-highlight">install the APK</span> by scanning the QR code here:
+                        </p>
+                        <button class="hero-notice-button" id="generateQRButton">Generate QR Code</button>
+                </div>
+
+                    <div class="download-buttons">
+                        <a href="#" class="download-btn" id="androidDownloadBtn">
+                            <div class="download-icon">🤖</div>
+                            <div class="download-text">
+                                <span class="download-label">Download on</span>
+                                <span class="download-store">Google Play</span>
+                            </div>
+                        </a>
+                        <a href="#" class="download-btn" id="iosDownloadBtn">
+                            <div class="download-icon">📱</div>
+                            <div class="download-text">
+                                <span class="download-label">Download on</span>
+                                <span class="download-store">App Store</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="app-carousel">
+                        <div class="app-slides">
+                            <!-- Screen 1: Social Feed -->
+                            <div class="app-slide">
+                                <div class="app-slide-title">📱 Social Feed</div>
+                <div class="phone-mockup">
+                    <div class="phone">
+                                        <div class="phone-screen app-screen-1">
+                                            <div style="padding: 25px; color: white; height: 100%; display: flex; flex-direction: column;">
+                                                <!-- Header -->
+                                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #333;">
+                                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                                        <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #ff6b6b, #ff8e8e); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px;">🇳🇵</div>
+                                    <div>
+                                                            <div style="font-weight: 700; font-size: 18px;">Bichar Nepal</div>
+                                                            <div style="font-size: 13px; opacity: 0.7;">@bichar_nepal • 2h</div>
+                                    </div>
+                                </div>
+                                                    <div style="font-size: 20px; opacity: 0.6;">⋯</div>
+                                </div>
+                                                
+                                                <!-- Posts -->
+                                                <div style="flex: 1; overflow-y: auto;">
+                                                    <div style="background: linear-gradient(135deg, #2d2d2d, #3a3a3a); padding: 20px; border-radius: 15px; margin-bottom: 20px; border-left: 4px solid #ff6b6b;">
+                                                        <div style="font-size: 15px; margin-bottom: 15px; line-height: 1.5;">🇳🇵 Proud to be part of Nepal's free speech movement! No censorship, no surveillance, just authentic conversations. Join us in building a better digital future for Nepal.</div>
+                                                        <div style="display: flex; gap: 20px; font-size: 14px; opacity: 0.8;">
+                                                            <span style="display: flex; align-items: center; gap: 5px;">💬 127</span>
+                                                            <span style="display: flex; align-items: center; gap: 5px;">🔄 43</span>
+                                                            <span style="display: flex; align-items: center; gap: 5px;">❤️ 89</span>
+                                </div>
+                            </div>
+                                                    
+                                                    <div style="background: linear-gradient(135deg, #2d2d2d, #3a3a3a); padding: 20px; border-radius: 15px; margin-bottom: 20px; border-left: 4px solid #3b82f6;">
+                                                        <div style="font-size: 15px; margin-bottom: 15px; line-height: 1.5;">🔒 Your privacy is our priority. End-to-end encryption for all messages and posts. We can't see your data even if we wanted to.</div>
+                                                        <div style="display: flex; gap: 20px; font-size: 14px; opacity: 0.8;">
+                                                            <span style="display: flex; align-items: center; gap: 5px;">💬 67</span>
+                                                            <span style="display: flex; align-items: center; gap: 5px;">🔄 23</span>
+                                                            <span style="display: flex; align-items: center; gap: 5px;">❤️ 156</span>
+                        </div>
+                    </div>
+                                                    
+                                                    <div style="background: linear-gradient(135deg, #2d2d2d, #3a3a3a); padding: 20px; border-radius: 15px; border-left: 4px solid #10b981;">
+                                                        <div style="font-size: 15px; margin-bottom: 15px; line-height: 1.5;">👥 Join communities that matter to you. No algorithms, no manipulation. Just real people, real conversations.</div>
+                                                        <div style="display: flex; gap: 20px; font-size: 14px; opacity: 0.8;">
+                                                            <span style="display: flex; align-items: center; gap: 5px;">💬 45</span>
+                                                            <span style="display: flex; align-items: center; gap: 5px;">🔄 18</span>
+                                                            <span style="display: flex; align-items: center; gap: 5px;">❤️ 203</span>
+                </div>
+            </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Screen 2: Communities -->
+                            <div class="app-slide">
+                                <div class="app-slide-title">👥 Communities</div>
+                                <div class="phone-mockup">
+                                    <div class="phone">
+                                        <div class="phone-screen app-screen-2">
+                                            <div style="padding: 25px; color: white; height: 100%; display: flex; flex-direction: column;">
+                                                <!-- Header -->
+                                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #334155;">
+                                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                                        <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #3b82f6, #60a5fa); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px;">👥</div>
+                                                        <div>
+                                                            <div style="font-weight: 700; font-size: 18px;">Communities</div>
+                                                            <div style="font-size: 13px; opacity: 0.7;">Find your tribe</div>
+                </div>
+                </div>
+                                                    <div style="font-size: 20px; opacity: 0.6;">🔍</div>
+                </div>
+                                                
+                                                <!-- Community List -->
+                                                <div style="flex: 1; overflow-y: auto;">
+                                                    <div style="background: linear-gradient(135deg, #1e293b, #334155); padding: 20px; border-radius: 15px; margin-bottom: 20px; border-left: 4px solid #3b82f6;">
+                                                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                                            <div style="font-size: 24px;">🏔️</div>
+                                                            <div>
+                                                                <div style="font-weight: 700; font-size: 16px;">Kathmandu Hikers</div>
+                                                                <div style="font-size: 12px; opacity: 0.7;">2.3k members • Active now</div>
+                </div>
+                </div>
+                                                        <div style="font-size: 14px; margin-bottom: 15px; line-height: 1.4; opacity: 0.9;">Planning weekend trek to Shivapuri. Anyone interested? Weather looks perfect! 🌤️</div>
+                                                        <div style="display: flex; gap: 20px; font-size: 13px; opacity: 0.8;">
+                                                            <span style="display: flex; align-items: center; gap: 5px;">💬 45</span>
+                                                            <span style="display: flex; align-items: center; gap: 5px;">🔄 12</span>
+                                                            <span style="display: flex; align-items: center; gap: 5px;">❤️ 89</span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div style="background: linear-gradient(135deg, #1e293b, #334155); padding: 20px; border-radius: 15px; margin-bottom: 20px; border-left: 4px solid #f59e0b;">
+                                                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                                            <div style="font-size: 24px;">🎨</div>
+                                                            <div>
+                                                                <div style="font-weight: 700; font-size: 16px;">Nepali Artists</div>
+                                                                <div style="font-size: 12px; opacity: 0.7;">1.8k members • 2h ago</div>
+                                                            </div>
+                                                        </div>
+                                                        <div style="font-size: 14px; margin-bottom: 15px; line-height: 1.4; opacity: 0.9;">Showcasing traditional Thangka paintings from Patan. The detail is incredible! 🖼️</div>
+                                                        <div style="display: flex; gap: 20px; font-size: 13px; opacity: 0.8;">
+                                                            <span style="display: flex; align-items: center; gap: 5px;">💬 23</span>
+                                                            <span style="display: flex; align-items: center; gap: 5px;">🔄 7</span>
+                                                            <span style="display: flex; align-items: center; gap: 5px;">❤️ 156</span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div style="background: linear-gradient(135deg, #1e293b, #334155); padding: 20px; border-radius: 15px; border-left: 4px solid #10b981;">
+                                                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                                            <div style="font-size: 24px;">🍜</div>
+                                                            <div>
+                                                                <div style="font-weight: 700; font-size: 16px;">Nepali Food Lovers</div>
+                                                                <div style="font-size: 12px; opacity: 0.7;">3.1k members • 1h ago</div>
+                                                            </div>
+                                                        </div>
+                                                        <div style="font-size: 14px; margin-bottom: 15px; line-height: 1.4; opacity: 0.9;">Best momo recipe from my grandmother! Secret ingredient revealed 👵🏻</div>
+                                                        <div style="display: flex; gap: 20px; font-size: 13px; opacity: 0.8;">
+                                                            <span style="display: flex; align-items: center; gap: 5px;">💬 78</span>
+                                                            <span style="display: flex; align-items: center; gap: 5px;">🔄 34</span>
+                                                            <span style="display: flex; align-items: center; gap: 5px;">❤️ 234</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Screen 3: Private Messages -->
+                            <div class="app-slide">
+                                <div class="app-slide-title">💬 Private Messages</div>
+                                <div class="phone-mockup">
+                                    <div class="phone">
+                                        <div class="phone-screen app-screen-3">
+                                            <div style="padding: 25px; color: white; height: 100%; display: flex; flex-direction: column;">
+                                                <!-- Header -->
+                                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #4c1d95;">
+                                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                                        <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #10b981, #34d399); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px;">🔒</div>
+                                                        <div>
+                                                            <div style="font-weight: 700; font-size: 18px;">Private Chat</div>
+                                                            <div style="font-size: 13px; opacity: 0.7;">End-to-end encrypted</div>
+                                                        </div>
+                                                    </div>
+                                                    <div style="font-size: 20px; opacity: 0.6;">📞</div>
+                                                </div>
+                                                
+                                                <!-- Messages -->
+                                                <div style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px;">
+                                                    <div style="display: flex; justify-content: flex-end;">
+                                                        <div style="background: linear-gradient(135deg, #312e81, #4c1d95); padding: 15px 20px; border-radius: 20px 20px 5px 20px; max-width: 80%;">
+                                                            <div style="font-size: 14px; margin-bottom: 5px; line-height: 1.4;">Hey, did you see the news about the new policy? It's quite concerning.</div>
+                                                            <div style="font-size: 11px; opacity: 0.6; text-align: right;">2:30 PM</div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div style="display: flex; justify-content: flex-start;">
+                                                        <div style="background: linear-gradient(135deg, #1e293b, #334155); padding: 15px 20px; border-radius: 20px 20px 20px 5px; max-width: 80%;">
+                                                            <div style="font-size: 14px; margin-bottom: 5px; line-height: 1.4;">Yes, it's very concerning. We should discuss this privately. This is exactly why we need platforms like Tarang.</div>
+                                                            <div style="font-size: 11px; opacity: 0.6; text-align: right;">2:32 PM</div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div style="display: flex; justify-content: flex-end;">
+                                                        <div style="background: linear-gradient(135deg, #312e81, #4c1d95); padding: 15px 20px; border-radius: 20px 20px 5px 20px; max-width: 80%;">
+                                                            <div style="font-size: 14px; margin-bottom: 5px; line-height: 1.4;">Absolutely. This platform gives us the freedom to speak openly without fear of surveillance.</div>
+                                                            <div style="font-size: 11px; opacity: 0.6; text-align: right;">2:35 PM</div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div style="display: flex; justify-content: flex-start;">
+                                                        <div style="background: linear-gradient(135deg, #1e293b, #334155); padding: 15px 20px; border-radius: 20px 20px 20px 5px; max-width: 80%;">
+                                                            <div style="font-size: 14px; margin-bottom: 5px; line-height: 1.4;">Exactly! And knowing our messages are encrypted gives me peace of mind. 🔒</div>
+                                                            <div style="font-size: 11px; opacity: 0.6; text-align: right;">2:37 PM</div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div style="display: flex; justify-content: flex-end;">
+                                                        <div style="background: linear-gradient(135deg, #312e81, #4c1d95); padding: 15px 20px; border-radius: 20px 20px 5px 20px; max-width: 80%;">
+                                                            <div style="font-size: 14px; margin-bottom: 5px; line-height: 1.4;">Same here. Let's continue this conversation here where we can be honest and open.</div>
+                                                            <div style="font-size: 11px; opacity: 0.6; text-align: right;">2:40 PM</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Message Input -->
+                                                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #4c1d95;">
+                                                    <div style="background: linear-gradient(135deg, #312e81, #4c1d95); padding: 12px 20px; border-radius: 25px; display: flex; align-items: center; gap: 10px;">
+                                                        <div style="font-size: 16px; opacity: 0.6;">Type a message...</div>
+                                                        <div style="margin-left: auto; font-size: 18px;">📤</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <!-- Why Bichar Section -->
+    <section class="why-bichar-section" id="why-bichar">
+        <div class="container">
+            <div class="why-bichar-content">
+                <div class="section-header">
+                    <div class="section-badge">Why Bichar is Different</div>
+                    <h2 class="section-title">Content Over Followers</h2>
+                    <p class="section-description">Unlike other platforms that prioritize follower counts and engagement metrics, Bichar focuses on what truly matters - the quality of your content and the authenticity of your voice.</p>
+                </div>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-item other-platforms">
+                        <div class="comparison-header">
+                            <div class="comparison-icon">❌</div>
+                            <h3>Follower-Based Platforms</h3>
+                </div>
+                        <ul class="comparison-list">
+                            <li>Popularity contests and follower counts</li>
+                            <li>Algorithm manipulation and echo chambers</li>
+                            <li>Content buried by engagement metrics</li>
+                            <li>Influencer culture and fake followers</li>
+                            <li>Quality content gets lost in the noise</li>
+                            <li>Pressure to post for likes, not value</li>
+                        </ul>
+                </div>
+                    
+                    <div class="comparison-item tarang-platform">
+                        <div class="comparison-header">
+                            <div class="comparison-icon">✅</div>
+                            <h3>Bichar - Content-First</h3>
+                </div>
+                        <ul class="comparison-list">
+                            <li>Content quality determines visibility</li>
+                            <li>Chronological, unfiltered feeds</li>
+                            <li>Every voice gets equal opportunity</li>
+                            <li>No fake followers or engagement farming</li>
+                            <li>Meaningful conversations over metrics</li>
+                            <li>Focus on ideas, not popularity</li>
+                        </ul>
+                </div>
+                </div>
+                
+                <div class="key-features">
+                    <div class="feature-highlight">
+                        <div class="feature-icon">🎯</div>
+                        <h4>Content Quality Matters</h4>
+                        <p>Your ideas and insights are what count, not how many people follow you.</p>
+                    </div>
+                    <div class="feature-highlight">
+                        <div class="feature-icon">⚖️</div>
+                        <h4>Equal Voice for All</h4>
+                        <p>Every user gets the same opportunity to be heard, regardless of follower count.</p>
+                    </div>
+                    <div class="feature-highlight">
+                        <div class="feature-icon">🔍</div>
+                        <h4>Discover by Interest</h4>
+                        <p>Find content based on topics and communities, not popularity contests.</p>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </section>
+
+
+
+    <!-- QR Code Modal -->
+    <div class="qr-modal" id="qrModal">
+        <div class="qr-content">
+            <button class="qr-close" id="qrClose">&times;</button>
+            <h3 class="qr-title">Download Bichar</h3>
+            <p class="qr-description">Scan this QR code with your phone to download the Bichar app</p>
+            <div class="qr-code">
+                <div class="qr-pattern"></div>
+            </div>
+            <p class="qr-instructions">Point your camera at the QR code to open the download link</p>
+            </div>
+        </div>
+
+        <!-- Download Info Modal -->
+        <div class="download-info-modal" id="downloadInfoModal">
+            <div class="download-info-content">
+                <button class="download-info-close" id="downloadInfoClose">&times;</button>
+                <div class="download-info-icon" id="downloadInfoIcon">📱</div>
+                <h3 class="download-info-title" id="downloadInfoTitle">Download Bichar</h3>
+                <p class="download-info-description" id="downloadInfoDescription">
+                    Bichar is currently being reviewed by app stores and will be available soon!
+                </p>
+                <div class="download-info-status">Coming Soon</div>
+                <a href="#" class="download-info-qr-button" id="downloadInfoQRButton">Get QR Code for APK</a>
+            </div>
+        </div>
+
+        <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📧 contact@bichar.app</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+            <div class="social-links">
+                    <a href="#" title="Facebook">f</a>
+                    <a href="#" title="Instagram">ig</a>
+                    <a href="#" title="X (Twitter)">𝕏</a>
+                    <a href="#" title="TikTok">tt</a>
+            </div>
+            </div>
+    </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Bichar - Nepal's own free speech social media</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Content-First • No Followers • No Algorithms • Free Speech</p>
+        </div>
+    </footer>
+
+    <script>
+        // Modern JavaScript functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navbar scroll effect
+            const navbar = document.getElementById('navbar');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // QR Code Modal functionality
+        const qrButton = document.getElementById('qrButton');
+        const generateQRButton = document.getElementById('generateQRButton');
+        const qrModal = document.getElementById('qrModal');
+        const qrClose = document.getElementById('qrClose');
+
+        // Download Info Modal functionality
+        const androidDownloadBtn = document.getElementById('androidDownloadBtn');
+        const iosDownloadBtn = document.getElementById('iosDownloadBtn');
+        const downloadInfoModal = document.getElementById('downloadInfoModal');
+        const downloadInfoClose = document.getElementById('downloadInfoClose');
+        const downloadInfoQRButton = document.getElementById('downloadInfoQRButton');
+
+            function openQRModal() {
+                qrModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeQRModal() {
+                qrModal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+
+            function openDownloadInfoModal(platform) {
+                const icon = document.getElementById('downloadInfoIcon');
+                const title = document.getElementById('downloadInfoTitle');
+                const description = document.getElementById('downloadInfoDescription');
+                
+                if (platform === 'android') {
+                    icon.textContent = '🤖';
+                    title.textContent = 'Download on Google Play';
+                    description.textContent = 'Bichar is currently being reviewed by Google Play Store and will be available soon! You can get the APK now by scanning the QR code.';
+                } else if (platform === 'ios') {
+                    icon.textContent = '📱';
+                    title.textContent = 'Download on App Store';
+                    description.textContent = 'Bichar is currently being reviewed by Apple App Store and will be available soon! You can get the APK now by scanning the QR code.';
+                }
+                
+                downloadInfoModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeDownloadInfoModal() {
+                downloadInfoModal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+
+            qrButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                openQRModal();
+            });
+
+            generateQRButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                openQRModal();
+            });
+
+            qrClose.addEventListener('click', closeQRModal);
+
+            // Download button event listeners
+            androidDownloadBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openDownloadInfoModal('android');
+            });
+
+            iosDownloadBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openDownloadInfoModal('ios');
+            });
+
+            // Download info modal close listeners
+            downloadInfoClose.addEventListener('click', closeDownloadInfoModal);
+            
+            downloadInfoQRButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeDownloadInfoModal();
+                openQRModal();
+            });
+
+            // Close modal when clicking outside
+            qrModal.addEventListener('click', function(e) {
+                if (e.target === qrModal) {
+                    closeQRModal();
+                }
+            });
+
+            downloadInfoModal.addEventListener('click', function(e) {
+                if (e.target === downloadInfoModal) {
+                    closeDownloadInfoModal();
+                }
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (qrModal.classList.contains('show')) {
+                        closeQRModal();
+                    } else if (downloadInfoModal.classList.contains('show')) {
+                        closeDownloadInfoModal();
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
